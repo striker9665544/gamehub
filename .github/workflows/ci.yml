@@ -40,6 +40,9 @@ jobs:
       - name: Build Docker image (backend)
         run: |
           docker build -t gamehub/yatzee-api:${{ github.sha }} .
+
+      - name: Tag image with 'latest'
+        run: docker tag gamehub/yatzee-api:${{ github.sha }} gamehub/yatzee-api:latest    
       
       - name: Log backend image size
         run: |
@@ -86,6 +89,9 @@ jobs:
       - name: Build Docker image (frontend)
         run: |
           docker build -t gamehub/yatzee-frontend:${{ github.sha }} .
+
+      - name: Tag image with 'latest'
+        run: docker tag gamehub/yatzee-frontend:${{ github.sha }} gamehub/yatzee-api:latest
       
       - name: Log backend image size
         run: |

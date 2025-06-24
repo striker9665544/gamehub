@@ -75,3 +75,20 @@ Let me know if you want to:
 ✅ Set up multi-stage build for production optimization?
 
 ✅ Trigger build only for main or specific paths?
+
+
+
+
+======================================================================================================================================
+
+✅ Summary Table: What You’ve Done & Next
+Status	Task
+✅	Backend & frontend CI builds
+✅	Docker multistage build
+✅	Size logging per image
+🔄	Push images to registry
+🔄	Version/tag images smartly
+🔄	Add test runners
+🔄	Add Trivy/Snyk scan
+🔄	Push to staging or prod
+🔄	Slack/Discord notifications
