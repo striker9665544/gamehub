@@ -10,6 +10,7 @@ const GameSelectionPage = () => {
     alert(`Starting ${game} in ${mode} mode (navigate coming soon)`);
   };
 
+  //Images
   const gameOptions = [
     {
       name: 'Ludo',
