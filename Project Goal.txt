@@ -62,3 +62,16 @@ Cloud-safe properties (YAML + ENV)
 Unit + integration test
 
 Ready for ECS / GKE / App Engine
+
+
+======================================================================================================================================
+
+Let me know if you want to:
+
+✅ Push Docker image to Docker Hub or GitHub Container Registry?
+
+✅ Add automatic deployment to a cloud (e.g. Render, Railway, Fly.io, AWS)?
+
+✅ Set up multi-stage build for production optimization?
+
+✅ Trigger build only for main or specific paths?

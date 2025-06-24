@@ -1,43 +1,53 @@
-name: CI – Build Docker Image
+name: CI Pipeline
 
-# 👇 When to run this workflow
 on:
   push:
-    branches: [main]    # run when you push to main branch
-  pull_request:
-    branches: [main]    # run when someone creates a PR to main
+    branches:
+      - main
+    paths:
+      - 'yatzee-api/**'
+      - 'yatzee-frontend/**'
+      - '.github/workflows/ci.yml'
 
 jobs:
-  build:
-    runs-on: ubuntu-latest  # GitHub will create a Linux VM for you temporarily
-
+  backend:
+    if: contains(github.event.head_commit.message, '[backend]') || github.event_name == 'push'
+    name: Build Backend
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: yatzee-api
     steps:
-      # Step 1: Checkout the code from your repo
       - name: Checkout code
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
 
-      # Step 2: Setup Java (JDK 17 for Spring Boot)
-      - name: Set up JDK 17
-        uses: actions/setup-java@v3
-        with:
-          distribution: 'temurin'       # Temurin is a reliable OpenJDK distro
-          java-version: '17'
+      - name: Set execute permission for mvnw
+        run: chmod +x mvnw
 
-      # Step 3: Cache Maven dependencies for faster builds
-      - name: Cache Maven dependencies
-        uses: actions/cache@v3
-        with:
-          path: ~/.m2/repository         # Maven’s local repo
-          key: ${{ runner.os }}-maven-${{ hashFiles('**/pom.xml') }}
-          restore-keys: ${{ runner.os }}-maven-
+      - name: Build backend Docker image
+        run: |
+          docker build -t gamehub/yatzee-api:${{ github.sha }} .
+          docker image inspect gamehub/yatzee-api:${{ github.sha }} --format='Image Size: {{ .Size }} bytes'
 
-      # Step 4: Build the Spring Boot JAR file
-      - name: Build project with Maven
-        run: mvn clean package -DskipTests
-        working-directory: yatzee-api
+  frontend:
+    if: contains(github.event.head_commit.message, '[frontend]') || github.event_name == 'push'
+    name: Build Frontend
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: yatzee-frontend
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
 
-      # Step 5: Build Docker image using Dockerfile in project root
-      - name: Build Docker image
-        run: docker build -t gamehub/yatzee-api:${{ github.sha }} .
-        working-directory: yatzee-api
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Build frontend
+        run: npm run build
+
+      - name: Build frontend Docker image
+        run: |
+          docker build -t gamehub/yatzee-frontend:${{ github.sha }} .
+          docker image inspect gamehub/yatzee-frontend:${{ github.sha }} --format='Image Size: {{ .Size }} bytes'
 
