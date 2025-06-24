@@ -40,7 +40,11 @@ jobs:
       - name: Build Docker image (backend)
         run: |
           docker build -t gamehub/yatzee-api:${{ github.sha }} .
-          docker image inspect gamehub/yatzee-api:${{ github.sha }} --format='Image Size: {{ .Size }} bytes'
+      
+      - name: Log backend image size
+        run: |
+          size=$(docker image inspect gamehub/yatzee-api:${{ github.sha }} --format='{{.Size}}')
+          echo "Backend Image Size: $size bytes (~$(($size / 1024 / 1024)) MB)"
 
       - name: Show Docker image layer sizes (Backend)
         run: docker history gamehub/yatzee-api:${{ github.sha }}
@@ -82,7 +86,11 @@ jobs:
       - name: Build Docker image (frontend)
         run: |
           docker build -t gamehub/yatzee-frontend:${{ github.sha }} .
-          docker image inspect gamehub/yatzee-frontend:${{ github.sha }} --format='Image Size: {{ .Size }} bytes'
+      
+      - name: Log backend image size
+        run: |
+          size=$(docker image inspect gamehub/yatzee-api:${{ github.sha }} --format='{{.Size}}')
+          echo "Backend Image Size: $size bytes (~$(($size / 1024 / 1024)) MB)"
 
       - name: Show Docker image layer sizes (Backend)
         run: docker history gamehub/yatzee-frontend:${{ github.sha }}
