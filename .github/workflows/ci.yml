@@ -33,7 +33,7 @@ jobs:
 
       # Step 4: Build the Spring Boot JAR file
       - name: Build project with Maven
-        run: ./mvnw clean package -DskipTests
+        run: mvn clean package -DskipTests
 
       # Step 5: Build Docker image using Dockerfile in project root
       - name: Build Docker image
