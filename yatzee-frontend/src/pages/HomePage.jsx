@@ -18,6 +18,12 @@ const HomePage = () => {
       >
         Logout
       </button>
+      <button
+        onClick={() => window.location.href = "/select-game"}
+        className="mt-4 bg-green-600 px-4 py-2 rounded hover:bg-green-700"
+      >
+        Choose a Game
+      </button>
     </div>
   );
 };
