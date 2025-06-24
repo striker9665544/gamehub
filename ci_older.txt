@@ -1,0 +1,52 @@
+name: CI Pipeline
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - 'yatzee-api/**'
+      - 'yatzee-frontend/**'
+      - '.github/workflows/ci.yml'
+
+jobs:
+  backend:
+    if: contains(github.event.head_commit.message, '[backend]') || github.event_name == 'push'
+    name: Build Backend
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: yatzee-api
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set execute permission for mvnw
+        run: chmod +x mvnw
+
+      - name: Build backend Docker image
+        run: |
+          docker build -t gamehub/yatzee-api:${{ github.sha }} .
+          docker image inspect gamehub/yatzee-api:${{ github.sha }} --format='Image Size: {{ .Size }} bytes'
+
+  frontend:
+    if: contains(github.event.head_commit.message, '[frontend]') || github.event_name == 'push'
+    name: Build Frontend
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: yatzee-frontend
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Build frontend
+        run: npm run build
+
+      - name: Build frontend Docker image
+        run: |
+          docker build -t gamehub/yatzee-frontend:${{ github.sha }} .
+          docker image inspect gamehub/yatzee-frontend:${{ github.sha }} --format='Image Size: {{ .Size }} bytes'
