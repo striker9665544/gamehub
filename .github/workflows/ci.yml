@@ -89,7 +89,7 @@ jobs:
       
       - name: Log backend image size
         run: |
-          size=$(docker image inspect gamehub/yatzee-api:${{ github.sha }} --format='{{.Size}}')
+          size=$(docker image inspect gamehub/yatzee-frontend:${{ github.sha }} --format='{{.Size}}')
           echo "Backend Image Size: $size bytes (~$(($size / 1024 / 1024)) MB)"
 
       - name: Show Docker image layer sizes (Backend)
