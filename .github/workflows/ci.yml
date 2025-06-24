@@ -38,5 +38,5 @@ jobs:
 
       # Step 5: Build Docker image using Dockerfile in project root
       - name: Build Docker image
-        run: docker build -t gamehub-api:${{ github.sha }} .
+        run: docker build -t yatzee-api:${{ github.sha }} .
 
