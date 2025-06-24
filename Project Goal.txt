@@ -1,0 +1,64 @@
+Step 1: User Module (Auth: JWT + Guest)
+✅ User Entity: registered/guest
+
+✅ AuthController: login/register/guest
+
+✅ JWT Service: generate, validate
+
+✅ Filter + SecurityConfig: JWT filter
+
+✅ Role-based support: ROLE_GUEST, ROLE_USER
+
+🎮 Step 2: Game Module (Game Setup & Matchmaking)
+Game Entity: type (LUDO/YAHTZEE), status (waiting, running, finished)
+
+GameService: create/join game
+
+GameController: REST APIs
+
+👥 Step 3: Player Module
+Player Entity: user, game, AI status
+
+Join game as user/bot/guest
+
+Choose seat/color (for Ludo)
+
+🎲 Step 4: Ludo Logic Module
+LudoGameEngine (core logic)
+
+Move validation
+
+Turn handling
+
+Dice roll endpoint (WebSocket-ready)
+
+🎲 Step 5: Yahtzee Logic Module
+YahtzeeEngine: roll, hold, score
+
+Game state + turn tracker
+
+💬 Step 6: WebSocket & Turn Sync
+STOMP endpoints
+
+GameState broadcast
+
+Error handling
+
+🧠 Step 7: Bot Logic
+Simple AI for Ludo and Yahtzee
+
+Backend decision engine (called as player)
+
+🕹️ Step 8: Game History Module
+Store moves
+
+Game summary API (winner, duration)
+
+🧪 Step 9: Test + Dockerize + Multicloud Env Setup
+Dockerfile + docker-compose
+
+Cloud-safe properties (YAML + ENV)
+
+Unit + integration test
+
+Ready for ECS / GKE / App Engine
