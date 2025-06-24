@@ -42,6 +42,9 @@ jobs:
           docker build -t gamehub/yatzee-api:${{ github.sha }} .
           docker image inspect gamehub/yatzee-api:${{ github.sha }} --format='Image Size: {{ .Size }} bytes'
 
+      - name: Show Docker image layer sizes (Backend)
+        run: docker history gamehub/yatzee-api:${{ github.sha }}
+
   frontend:
     name: 🌐 Build Frontend
     if: github.event.head_commit.message != 'skip frontend'
@@ -80,3 +83,6 @@ jobs:
         run: |
           docker build -t gamehub/yatzee-frontend:${{ github.sha }} .
           docker image inspect gamehub/yatzee-frontend:${{ github.sha }} --format='Image Size: {{ .Size }} bytes'
+
+      - name: Show Docker image layer sizes (Backend)
+        run: docker history gamehub/yatzee-frontend:${{ github.sha }}
