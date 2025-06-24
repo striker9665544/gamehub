@@ -1,4 +1,4 @@
-name: CI Pipeline
+name: CI - Build GameHub Apps
 
 on:
   push:
@@ -11,43 +11,69 @@ on:
 
 jobs:
   backend:
-    if: contains(github.event.head_commit.message, '[backend]') || github.event_name == 'push'
-    name: Build Backend
+    name: 🛠️ Build Backend
+    if: github.event.head_commit.message != 'skip backend'
     runs-on: ubuntu-latest
     defaults:
       run:
         working-directory: yatzee-api
+
     steps:
-      - name: Checkout code
+      - name: Checkout Code
         uses: actions/checkout@v4
 
-      - name: Set execute permission for mvnw
-        run: chmod +x mvnw
+      - name: Set up JDK
+        uses: actions/setup-java@v4
+        with:
+          java-version: '17'
+          distribution: 'temurin'
 
-      - name: Build backend Docker image
-        run: |
-          docker build -t gamehub/yatzee-api:${{ github.sha }} .
-          docker image inspect gamehub/yatzee-api:${{ github.sha }} --format='Image Size: {{ .Size }} bytes'
+      - name: Cache Maven dependencies
+        uses: actions/cache@v4
+        with:
+          path: |
+            ~/.m2/repository
+          key: maven-${{ hashFiles('yatzee-api/pom.xml') }}
+          restore-keys: |
+            maven-
+
+      - name: Build Docker image (backend)
+        run: docker build -t gamehub/yatzee-api:${{ github.sha }} .
 
   frontend:
-    if: contains(github.event.head_commit.message, '[frontend]') || github.event_name == 'push'
-    name: Build Frontend
+    name: 🌐 Build Frontend
+    if: github.event.head_commit.message != 'skip frontend'
     runs-on: ubuntu-latest
     defaults:
       run:
         working-directory: yatzee-frontend
+
     steps:
-      - name: Checkout code
+      - name: Checkout Code
         uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Cache node_modules
+        uses: actions/cache@v4
+        with:
+          path: |
+            ~/.npm
+            ~/.cache
+            yatzee-frontend/node_modules
+          key: node-${{ hashFiles('yatzee-frontend/package-lock.json') }}
+          restore-keys: |
+            node-
 
       - name: Install dependencies
         run: npm ci
 
-      - name: Build frontend
+      - name: Build Frontend
         run: npm run build
 
-      - name: Build frontend Docker image
-        run: |
-          docker build -t gamehub/yatzee-frontend:${{ github.sha }} .
-          docker image inspect gamehub/yatzee-frontend:${{ github.sha }} --format='Image Size: {{ .Size }} bytes'
+      - name: Build Docker image (frontend)
+        run: docker build -t gamehub/yatzee-frontend:${{ github.sha }} .
 
