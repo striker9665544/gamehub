@@ -1,3 +1,4 @@
+//src/com/yatzee/yatzee_api/entity/User
 package com.yatzee.yatzee_api.entity;
 
 import jakarta.persistence.*;

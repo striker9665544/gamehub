@@ -1,3 +1,4 @@
+//src/com/yatzee/yatzee_api/config/CorsConfig
 package com.yatzee.yatzee_api.config;
 
 import org.springframework.context.annotation.Bean;

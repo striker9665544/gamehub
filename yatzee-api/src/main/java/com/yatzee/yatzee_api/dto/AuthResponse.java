@@ -1,3 +1,4 @@
+//src/com/yatzee/yatzee_api/dto/AuthResponse
 package com.yatzee.yatzee_api.dto;
 
 public class AuthResponse {

@@ -1,0 +1,63 @@
+🟡 Ludo Logic Module — Partial / Pending Work
+🟡 1. DTO: DiceRollResult
+Task	Status
+Return value + nextTurn from /roll endpoint	❌ Pending
+
+🟡 2. LudoMoveRequest
+Task	Status
+DTO for move — gameId, playerColor, tokenId	✅ Created
+Fix Method Reference (getTokenIndex() → getTokenId())	✅ Fixed
+
+🟡 3. Ludo Service & Controller
+Component	Status
+LudoService	✅ Created
+LudoController	✅ Created
+Endpoint: /ludo/roll	✅
+Endpoint: /ludo/move	✅
+Uses LudoGameEngine per gameId	✅
+
+🟡 4. Enhance LudoGameState DTO (Optional but ideal)
+Feature	Status
+Include game status: RUNNING or COMPLETED	⚠️ Not yet included
+
+We can add this using:
+
+java
+Copy
+Edit
+private boolean gameCompleted;
+in LudoGameState
+
+🟡 5. Unit Tests
+Test Type	Status
+Dice Roll Test	❌ Pending
+Token Move Test	❌ Pending
+Capture Test	❌ Pending
+Win Check Test	❌ Pending
+
+
+
+
+📌 Step-by-Step Frontend Plan for Ludo Logic:
+Step	Component	Feature
+1️⃣	ludoService.js	Axios calls: /roll, /move, /state
+2️⃣	LudoGamePage.jsx	Page layout: dice button, token move UI, current turn
+3️⃣	components/ludo/DiceRoller.jsx	UI for dice roll
+4️⃣	components/ludo/TokenBoard.jsx	Displays tokens per color
+5️⃣	Hook in useEffect	Fetch game state initially and on each move/roll
+
+
+✅ Frontend Goals (Step 4)
+We will implement the following:
+
+LudoGamePage.tsx (Main page to play Ludo)
+
+DiceRollButton.tsx (Roll dice button + value display)
+
+LudoBoard.tsx (Optional: visualize tokens)
+
+MoveTokenForm.tsx (Trigger token move)
+
+LudoService.ts (Axios calls to /api/ludo backend)
+
+Global Game State Hook (useLudoGame) (Optional for cleaner state)

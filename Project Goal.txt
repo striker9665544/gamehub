@@ -1,3 +1,5 @@
+Note 1:backend module completion then relational frontend completion
+
 Step 1: User Module (Auth: JWT + Guest)
 ✅ User Entity: registered/guest
 
@@ -81,6 +83,18 @@ Let me know if you want to:
 
 ======================================================================================================================================
 
+2. ✅ Push to Container Registry
+3. ✅ Deploy on Every Push
+4. ✅ Run Backend Unit Tests
+5. ✅ Run Frontend Tests
+6. ✅ Slim Down Spring Boot
+7. ✅ Use .dockerignore Smartly
+8. ✅ Enable Security Scans
+9. ✅ Add build summary artifacts
+10. ✅ Add Slack / Email Notification
+
+
+
 ✅ Summary Table: What You’ve Done & Next
 Status	Task
 ✅	Backend & frontend CI builds
@@ -92,3 +106,4 @@ Status	Task
 🔄	Add Trivy/Snyk scan
 🔄	Push to staging or prod
 🔄	Slack/Discord notifications
+

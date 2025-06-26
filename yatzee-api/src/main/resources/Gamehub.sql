@@ -1,4 +1,7 @@
-CREATE TABLE IF NOT EXISTS users_gameplay (
+USE gamehub;
+
+-- Recommended Schema
+CREATE TABLE IF NOT EXISTS users ( -- Renamed from users_gameplay
     id BIGINT AUTO_INCREMENT PRIMARY KEY,
     username VARCHAR(255) NOT NULL,
     email VARCHAR(255) NOT NULL UNIQUE,
@@ -6,4 +9,23 @@ CREATE TABLE IF NOT EXISTS users_gameplay (
     role VARCHAR(50) NOT NULL,
     guest BOOLEAN DEFAULT FALSE,
     created_at DATETIME DEFAULT CURRENT_TIMESTAMP
+);
+
+CREATE TABLE IF NOT EXISTS games (
+    id BIGINT PRIMARY KEY AUTO_INCREMENT,
+    type VARCHAR(20) NOT NULL,
+    status VARCHAR(20) NOT NULL,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+);
+
+CREATE TABLE IF NOT EXISTS player (
+    id BIGINT AUTO_INCREMENT PRIMARY KEY,
+    user_id BIGINT,
+    game_id BIGINT NOT NULL,
+    is_bot BOOLEAN NOT NULL,
+    color VARCHAR(20),
+    is_ready BOOLEAN DEFAULT FALSE,
+    FOREIGN KEY (user_id) REFERENCES users(id), -- Updated foreign key
+    FOREIGN KEY (game_id) REFERENCES games(id)
 );

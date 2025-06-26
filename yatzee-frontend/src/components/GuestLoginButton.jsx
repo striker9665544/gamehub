@@ -1,3 +1,4 @@
+//src/components/GuestLoginButton.jsx
 import { useNavigate } from 'react-router-dom';
 import { guestLogin } from '../services/authService';
 import { jwtDecode } from 'jwt-decode'; // ✅ Named import

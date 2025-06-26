@@ -1,3 +1,4 @@
+// src/utils/jwtUtils.js
 import { jwtDecode } from 'jwt-decode';
 
 export const decodeToken = (token) => {

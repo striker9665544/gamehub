@@ -1,3 +1,4 @@
+//src/com/yatzee/yatzee_api/controller/AuthController
 package com.yatzee.yatzee_api.controller;
 
 import com.yatzee.yatzee_api.dto.AuthRequest;

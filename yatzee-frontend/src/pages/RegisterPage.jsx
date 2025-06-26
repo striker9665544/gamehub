@@ -1,3 +1,4 @@
+// src/pages/RegisterPage.jsx
 import React, { useState } from 'react';
 import { registerUser } from '../services/authService';
 import { decodeToken } from '../utils/jwtUtils';
