@@ -16,6 +16,8 @@ COPY . .
 # Build the app
 RUN npm run build
 
+# --- ADD THIS LINE TO SEE THE BUILD OUTPUT ---
+RUN echo "Listing the contents of the build output directory (/app/dist):" && ls -lR /app/dist
 
 # Stage 2: Serve the app with Nginx
 FROM nginx:alpine

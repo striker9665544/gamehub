@@ -19,6 +19,9 @@ RUN ./mvnw dependency:go-offline -B
 COPY src ./src
 RUN ./mvnw clean package -DskipTests -B
 
+# --- ADD THIS LINE TO SEE THE JAR FILE NAME ---
+RUN echo "The built JAR file is:" && ls -l /app/target/*.jar
+
 # === STAGE 2: Production Image (Slim & Secure) ===
 FROM gcr.io/distroless/java17-debian11
 
