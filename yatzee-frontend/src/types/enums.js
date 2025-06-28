@@ -4,4 +4,5 @@ export const Color = {
   GREEN: "GREEN",
   BLUE: "BLUE",
   YELLOW: "YELLOW",
+  BROWN: "BROWN",
 };

@@ -3,5 +3,6 @@ package com.yatzee.yatzee_api.entity;
 
 public enum Role {
     ROLE_USER,
-    ROLE_GUEST
+    ROLE_GUEST,
+    ROLE_NEW
 }
