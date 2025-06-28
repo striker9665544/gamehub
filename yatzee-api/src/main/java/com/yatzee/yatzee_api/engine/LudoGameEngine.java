@@ -47,6 +47,7 @@ public class LudoGameEngine {
     public void endTurn() {
         turnQueue.add(turnQueue.poll());
         currentTurn = turnQueue.peek();
+        rotateTurn();
     }
 
     public PlayerState getPlayerState(Color color) {
@@ -136,5 +137,47 @@ public class LudoGameEngine {
             turnQueue.offer(current);
             currentTurn = turnQueue.peek();
         }
+    }
+    
+    private final Set<Color> botPlayers = new HashSet<>(); // ✅ ADD THIS: To track bot players
+
+    // MODIFIED CONSTRUCTOR: Accept a map of colors to their bot status
+    public LudoGameEngine(Map<Color, Boolean> playerConfig) {
+        for (Map.Entry<Color, Boolean> entry : playerConfig.entrySet()) {
+            Color color = entry.getKey();
+            boolean isBot = entry.getValue();
+
+            playerStates.put(color, new PlayerState(color));
+            turnQueue.add(color);
+
+            if (isBot) {
+                botPlayers.add(color);
+            }
+        }
+        this.currentTurn = turnQueue.peek();
+    }
+    
+    // ✅ ADD THIS METHOD: To check if the current turn belongs to a bot
+    public boolean isBotTurn() {
+        return botPlayers.contains(currentTurn);
+    }
+    
+    // ✅ ADD THIS METHOD: To get a list of valid moves for the current player
+    public List<Integer> getValidMoves() {
+        if (lastDiceRoll == null) return Collections.emptyList();
+        
+        PlayerState currentPlayerState = playerStates.get(currentTurn);
+        List<Integer> validTokenIds = new ArrayList<>();
+        
+        for (Token token : currentPlayerState.getTokens()) {
+            if (token.getState() == TokenState.HOME && lastDiceRoll == 6) {
+                validTokenIds.add(token.getId());
+            } else if (token.getState() == TokenState.ACTIVE) {
+                // Simplified logic: for now, any active token is movable.
+                // A real implementation would check if the move is valid (e.g., doesn't overshoot the home path).
+                validTokenIds.add(token.getId());
+            }
+        }
+        return validTokenIds;
     }
 }

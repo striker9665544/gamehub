@@ -32,13 +32,32 @@ public class GameController {
     }
     
     // ✅ ADD THIS ENDPOINT BACK FOR THE YATZEE LOBBY
-    @GetMapping("/{gameId}")
+    /*@GetMapping("/{gameId}")
     public ResponseEntity<Game> getGameById(@PathVariable Long gameId) {
         return gameRepository.findById(gameId)
             .map(ResponseEntity::ok)
             .orElse(ResponseEntity.notFound().build());
+    }*/
+
+    // Endpoint for creating a game lobby (primarily for Yatzee)
+    @PostMapping("/create-lobby")
+    public ResponseEntity<Game> createLobby(@RequestBody GameCreateRequest request, Authentication authentication) {
+        Game game = gameService.createGameLobby(request, authentication.getName());
+        return ResponseEntity.ok(game);
     }
 
-    // You might also need an endpoint for creating a Yatzee game lobby later
-    // And an endpoint to start the Yatzee game from the lobby
+    // Endpoint to get details for a lobby
+    @GetMapping("/{gameId}")
+    public ResponseEntity<Game> getGameById(@PathVariable Long gameId) {
+        return gameRepository.findById(gameId)
+                .map(ResponseEntity::ok)
+                .orElse(ResponseEntity.notFound().build());
+    }
+
+    // Endpoint for the "Start Game" button in a lobby
+    @PostMapping("/{gameId}/start")
+    public ResponseEntity<Void> startGame(@PathVariable Long gameId) {
+       gameService.startGame(gameId);
+       return ResponseEntity.ok().build();
+    }
 }

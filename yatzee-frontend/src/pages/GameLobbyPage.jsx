@@ -1,10 +1,11 @@
 // src/pages/GameLobbyPage.jsx
 import React, { useState, useEffect, useCallback } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
-import { getGameDetails, startGame as startGameService } from '../services/gameService'; // Ensure startGame is imported
+import { getGameDetails, startGame as startGameService } from '../services/gameService';
 import { getPlayersInGame, joinGame } from '../services/playerService';
 import { decodeToken } from '../utils/jwtUtils';
 import useWebSocket from '../hooks/useWebSocket';
+import { startGame } from '../services/gameService';
 
 const GameLobbyPage = () => {
     // ... (useState, useParams, etc. are the same)
@@ -84,15 +85,13 @@ const GameLobbyPage = () => {
         }
     };
     
-    const handleStartGame = async () => {
-        setError('');
-        try {
-            await startGameService(gameId);
-        } catch (error) {
-            const errorMessage = error.response?.data?.message || "Failed to start. Are all players ready?";
-            setError(errorMessage);
-            console.error(error);
-        }
+    const handleStartGame = () => {
+        startGame(gameId)
+            .then(() => {
+                // Navigate to the game page after starting
+                navigate(`/play/game/${gameId}`);
+            })
+            .catch(err => console.error("Failed to start game:", err));
     };
     
     const allPlayersHaveColor = players.length > 0 && players.every(p => p.color);
@@ -154,13 +153,9 @@ const GameLobbyPage = () => {
                     and if all players in the lobby have chosen a color. */}
                 {hasPlayerJoinedWithColor && (
                    <div className="text-center mt-8">
-                     <button 
-                        onClick={handleStartGame}
-                        disabled={!isConnected || !allPlayersHaveColor || players.length < 2}
-                        className="bg-blue-600 hover:bg-blue-700 px-8 py-3 rounded-lg font-bold text-lg disabled:bg-gray-500 disabled:cursor-not-allowed"
-                     >
-                       Start Game ({players.length}/2+)
-                     </button>
+                        <button onClick={handleStartGame} className="bg-blue-600 ...">
+                            Start Game
+                        </button>
                      {!allPlayersHaveColor && <p className="text-xs text-gray-400 mt-2">Waiting for all players to pick a color...</p>}
                      {players.length < 2 && <p className="text-xs text-gray-400 mt-2">Waiting for more players...</p>}
                    </div>

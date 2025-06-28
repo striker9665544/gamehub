@@ -1,7 +1,8 @@
 // src/pages/GameSelectionPage.jsx
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { createLudoGameAndGetState } from '../services/gameService';
+//import { createLudoGameAndGetState } from '../services/gameService';
+import { createLudoGameAndGetState, createGameLobby } from '../services/gameService';
 
 const GameSelectionPage = () => {
   const navigate = useNavigate();
@@ -11,21 +12,19 @@ const GameSelectionPage = () => {
     setError('');
     const gameType = gameName.toUpperCase();
 
-    if (gameType !== 'LUDO') {
-      alert("Only the Ludo Quick Start is implemented for now.");
-      return;
-    }
-
-    const playerCount = parseInt(mode.charAt(0), 10);
-    
     try {
-      console.log(`Creating Ludo game for ${playerCount} players...`);
-      const response = await createLudoGameAndGetState(playerCount);
-      console.log("Received game and initial state:", response);
-      
-      // Navigate to the game page, passing the initial state via router state
-      navigate(`/play/game/${response.game.id}`, { state: { initialState: response.initialState } });
+      if (gameType === 'LUDO') {
+        const playerCount = parseInt(mode.charAt(0), 10);
+        const response = await createLudoGameAndGetState(playerCount);
+        // Ludo Quick Start: Go directly to the game board with initial state
+        navigate(`/play/game/${response.game.id}`, { state: { initialState: response.initialState } });
 
+      } else if (gameType === 'YATZEE') {
+        const playerCount = mode.toLowerCase().includes('computer') ? 2 : 1;
+        const createdGame = await createGameLobby(gameType, playerCount);
+        // Yatzee: Go to the lobby first
+        navigate(`/game/${createdGame.id}`);
+      }
     } catch (err) {
       console.error('Failed to create game:', err);
       const errorMessage = err.response?.data?.message || 'Could not create the game.';
